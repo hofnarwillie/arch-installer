@@ -46,3 +46,16 @@ swapon /dev/sda2
 mount /dev/sda1 /mnt
 mkdir /mnt/home
 mount /dev/sda3 /mnt/home
+
+# install base
+cp resources/live-boot/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
+pacstrap /mnt base linux linux-firmware vim
+
+genfstab -L /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+
+# locale
+ln -sf /usr/share/zoneinfo/GB /etc/localtime
+hwclock --systohc
+cp resources/target-system/etc/locale.gen /etc/locale.gen
+locale-gen
