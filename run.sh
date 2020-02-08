@@ -49,6 +49,7 @@ mount /dev/sda3 /mnt/home
 
 # install base
 cp resources/live-boot/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
+cp -r ./resources/target-system/* /mnt
 pacstrap /mnt base linux linux-firmware vim
 
 genfstab -L /mnt >> /mnt/etc/fstab
@@ -57,5 +58,4 @@ arch-chroot /mnt
 # locale
 ln -sf /usr/share/zoneinfo/GB /etc/localtime
 hwclock --systohc
-cp resources/target-system/etc/locale.gen /etc/locale.gen
 locale-gen
