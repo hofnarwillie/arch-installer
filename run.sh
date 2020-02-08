@@ -54,8 +54,31 @@ pacstrap /mnt base linux linux-firmware vim
 
 genfstab -L /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
+pacman -S sudo
 
 # locale
 ln -sf /usr/share/zoneinfo/GB /etc/localtime
 hwclock --systohc
 locale-gen
+
+# network
+systemctl start dhcpcd@enp3s0.service
+
+# bootloader
+pacman -S grub
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# users
+echo "Set root password:"
+passwd
+
+useradd -m willem
+echo "Set user account password:"
+passwd willem
+usermod -aG wheel,audio,video,optical,storage willem
+
+echo "uncomment %wheel ALL=(ALL) ALL"
+visudo
+
+echo "now reboot"
