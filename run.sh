@@ -47,6 +47,9 @@ mount /dev/sda1 /mnt
 mkdir /mnt/home
 mount /dev/sda3 /mnt/home
 
+echo "Drives partitioned"
+read -p "Press any key to continue..."
+
 # install base
 cp resources/live-boot/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
 cp -r ./resources/target-system/* /mnt
@@ -56,10 +59,15 @@ genfstab -L /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
 pacman -S sudo
 
+echo "Base system installed"
+read -p "Press any key to continue..."
+
 # locale
 ln -sf /usr/share/zoneinfo/GB /etc/localtime
 hwclock --systohc
 locale-gen
+
+echo "Local generated"
 
 # network
 systemctl start dhcpcd@enp3s0.service
